@@ -6,7 +6,7 @@ const TradingViewChart = () => {
   const chartContainerRef = useRef(null);
   const [candleSeries, setCandleSeries] = useState(null);
   const [candlestickData, setCandlestickData] = useState([]);
-
+  // eslint-disable-next-line
   useEffect(() => {
     const chart = createChart(chartContainerRef.current, {
       width: chartContainerRef.current.clientWidth,
