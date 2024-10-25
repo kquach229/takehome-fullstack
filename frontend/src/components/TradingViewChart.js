@@ -138,6 +138,8 @@ const TradingViewChart = () => {
       const startTime = now - 30 * 60 * 1000;
       const countBack = 30;
 
+      console.log(candlestickData);
+
       try {
         const response = await fetch(
           `https://serverprod.vest.exchange/v1/ohlcv/klines?symbol=ETH-PERP&interval=1m&startTime=${startTime}&endTime=${now}&countBack=${countBack}`
@@ -225,7 +227,7 @@ const TradingViewChart = () => {
       ws.close();
       chart.remove();
     };
-  }, []);
+  });
 
   return (
     <Box

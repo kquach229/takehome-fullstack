@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Grid, Tabs, Typography, Tab } from '@mui/material';
+import { Box, Grid, Tabs, Tab } from '@mui/material';
 import TradingViewChart from './TradingViewChart';
 import OrderForm from './OrderForm';
 
