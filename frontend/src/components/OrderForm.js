@@ -11,12 +11,24 @@ import {
   IconButton,
   Slider,
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { RxCaretDown } from 'react-icons/rx';
+import Confetti from 'react-confetti';
 
 const OrderForm = () => {
   const [tabValue, setTabValue] = useState('LONG');
   const [orderType, setOrderType] = useState('MARKET');
+  const [confettiSource, setConfettiSource] = useState({
+    x: 0,
+    y: 0,
+    w: 200,
+    h: 200,
+  });
+
+  const [buttonClicked, setButtonClicked] = useState(false);
+
+  const audioRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -24,6 +36,28 @@ const OrderForm = () => {
 
   const handleOrderType = (event) => {
     setOrderType(event.target.value);
+  };
+
+  const handleClickBuy = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+
+    setButtonClicked(true);
+    // Capture the button's position
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setConfettiSource({
+        x: rect.left + rect.width / 2 - 100, // Center the confetti
+        y: rect.top + rect.height / 2 - 100, // Center the confetti
+        w: 200,
+        h: 200,
+      });
+    }
+
+    setTimeout(() => {
+      setButtonClicked(false);
+    }, 5000);
   };
 
   return (
@@ -38,7 +72,6 @@ const OrderForm = () => {
           label='LONG'
           sx={{
             width: '50%',
-
             color: tabValue === 'LONG' ? '#FF5A44' : 'white',
             borderBottom: tabValue === 'LONG' ? '2px solid #FF5A44' : 'none',
             '&:hover': {
@@ -59,6 +92,8 @@ const OrderForm = () => {
           }}
         />
       </Tabs>
+
+      {/* Order Type Select */}
       <div style={{ margin: '15px 0' }}>
         <Typography fontSize='14px' mb={2}>
           Order Type
@@ -68,7 +103,6 @@ const OrderForm = () => {
           fullWidth
           value={orderType}
           onChange={handleOrderType}
-          id='demo-multiple-name'
           IconComponent={() => (
             <InputAdornment position='end'>
               <IconButton>
@@ -92,6 +126,7 @@ const OrderForm = () => {
         </Select>
       </div>
 
+      {/* Size Input */}
       <div style={{ margin: '15px 0' }}>
         <Typography fontSize='14px' mb={2}>
           Size
@@ -122,6 +157,7 @@ const OrderForm = () => {
         </Typography>
       </div>
 
+      {/* Leverage Slider */}
       <Typography fontSize='14px' mb={2} color='#AEADAD'>
         Leverage
       </Typography>
@@ -134,6 +170,8 @@ const OrderForm = () => {
         max={0.0000001}
         valueLabelDisplay='auto'
       />
+
+      {/* Additional Information */}
       <div
         style={{
           display: 'flex',
@@ -173,13 +211,14 @@ const OrderForm = () => {
           2.00 USDC (0.05%)
         </Typography>
       </div>
+
+      {/* Advanced Select */}
       <Select
         labelId='demo-multiple-name-label'
         fullWidth
         variant='filled'
         value={orderType}
         onChange={handleOrderType}
-        id='demo-multiple-name'
         IconComponent={() => (
           <InputAdornment position='end'>
             <IconButton>
@@ -198,7 +237,6 @@ const OrderForm = () => {
               outline: 'none',
             },
           },
-
           '&:before': {
             border: 'none',
           },
@@ -215,13 +253,39 @@ const OrderForm = () => {
         <MenuItem value='MARKET'>Advanced</MenuItem>
       </Select>
 
+      {/* Buy Button */}
       <Button
         fullWidth
+        ref={buttonRef}
+        onClick={handleClickBuy}
         variant='contained'
         style={{ background: '#4BC2A3' }}
         size='large'>
-        Buy / Long
+        {buttonClicked ? 'YOU JUST EARNED 200 ZK-TOKENS' : 'BUY / LONG'}
       </Button>
+
+      {/* Audio Element */}
+      <audio ref={audioRef} src='ping.mp3' preload='auto' />
+
+      {/* Confetti Component */}
+      {buttonClicked && (
+        <Confetti
+          confettiSource={confettiSource}
+          tweenDuration={100}
+          recycle={false}
+          drawShape={(ctx) => {
+            ctx.beginPath();
+            for (let i = 0; i < 22; i++) {
+              const angle = 0.35 * i;
+              const x = (0.2 + 1.5 * angle) * Math.cos(angle);
+              const y = (0.2 + 1.5 * angle) * Math.sin(angle);
+              ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.closePath();
+          }}
+        />
+      )}
     </Box>
   );
 };

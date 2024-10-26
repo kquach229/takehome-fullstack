@@ -22,15 +22,19 @@ const theme = createTheme({
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <div style={{ backgroundColor: 'black' }}>
+    <div
+      style={{
+        backgroundColor: 'black',
+        minHeight: '100vh',
+      }}>
+      <ThemeProvider theme={theme}>
         <Box p={3}>
           <Search />
           <StatusBar />
           <TradingViewPage />
         </Box>
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
+    </div>
   );
 };
 
