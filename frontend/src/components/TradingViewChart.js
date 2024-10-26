@@ -71,12 +71,22 @@ const TradingViewChart = () => {
       height: 550,
       layout: { background: { color: '#1A1A1A' }, textColor: 'white' },
       grid: {
-        vertLines: { color: '#424242' },
-        horzLines: { color: '#424242' },
+        vertLines: { color: '#424242' }, // Vertical gridline color
+        horzLines: { color: '#424242' }, // Horizontal gridline color
       },
       crosshair: { mode: 0 },
       rightPriceScale: { borderColor: '#485c7b' },
-      timeScale: { borderColor: '#485c7b', timeVisible: true },
+      timeScale: {
+        borderColor: '#485c7b',
+        timeVisible: true,
+        tickMarkFormatter: (time) => {
+          const date = new Date(time * 1000); // Convert seconds to milliseconds
+          return date.toLocaleDateString() + ' ' + date.toLocaleTimeString(); // e.g., "10/25/2024 10:00 AM"
+        },
+        // Adjust this option for better vertical line spacing
+        fixLeftEdge: true,
+        fixRightEdge: true,
+      },
     });
 
     const series = chart.addCandlestickSeries({
