@@ -81,7 +81,7 @@ const TradingViewChart = () => {
         timeVisible: true,
         tickMarkFormatter: (time) => {
           const date = new Date(time * 1000); // Convert seconds to milliseconds
-          return date.toLocaleDateString() + ' ' + date.toLocaleTimeString(); // e.g., "10/25/2024 10:00 AM"
+          return date.toLocaleTimeString(); // e.g., "10/25/2024 10:00 AM"
         },
         // Adjust this option for better vertical line spacing
         fixLeftEdge: true,
