@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import useWebSocket from 'react-use-websocket';
 
 const TradingViewChart = () => {
@@ -26,12 +26,11 @@ const TradingViewChart = () => {
     shouldReconnect: () => true,
   });
 
-  // Fetch initial candlestick data
   useEffect(() => {
     const fetchCandlestickData = async () => {
       const now = Date.now();
       const endTime = Math.floor(now * 1e6);
-      const startTime = Math.floor((now - 30 * 60 * 1000) * 1e6); // Last 30 minutes
+      const startTime = Math.floor((now - 30 * 60 * 1000) * 1e6);
 
       try {
         const response = await fetch(
@@ -44,7 +43,7 @@ const TradingViewChart = () => {
 
         const data = await response.json();
         const formattedData = data.map((item) => ({
-          time: Math.floor(item[0] / 1000), // Convert from milliseconds to seconds
+          time: Math.floor(item[0] / 1000),
           open: parseFloat(item[1]),
           high: parseFloat(item[2]),
           low: parseFloat(item[3]),
@@ -52,8 +51,6 @@ const TradingViewChart = () => {
         }));
 
         setCandlestickData(formattedData);
-
-        // Update the chart with fetched data
         if (candleSeries) {
           candleSeries.setData(formattedData);
         }
@@ -63,7 +60,7 @@ const TradingViewChart = () => {
     };
 
     fetchCandlestickData();
-  }, [candleSeries]); // Only runs when candleSeries is set
+  }, [candleSeries]);
 
   useEffect(() => {
     const chart = createChart(chartContainerRef.current, {
@@ -71,8 +68,8 @@ const TradingViewChart = () => {
       height: 600,
       layout: { background: { color: '#1A1A1A' }, textColor: 'white' },
       grid: {
-        vertLines: { color: '#424242' }, // Vertical gridline color
-        horzLines: { color: '#424242' }, // Horizontal gridline color
+        vertLines: { color: '#424242' },
+        horzLines: { color: '#424242' },
       },
       crosshair: { mode: 0 },
       rightPriceScale: { borderColor: '#485c7b' },
@@ -80,10 +77,9 @@ const TradingViewChart = () => {
         borderColor: '#485c7b',
         timeVisible: true,
         tickMarkFormatter: (time) => {
-          const date = new Date(time * 1000); // Convert seconds to milliseconds
-          return date.toLocaleTimeString(); // e.g., "10/25/2024 10:00 AM"
+          const date = new Date(time * 1000);
+          return date.toLocaleTimeString();
         },
-        // Adjust this option for better vertical line spacing
         fixLeftEdge: true,
         fixRightEdge: true,
       },
@@ -98,7 +94,7 @@ const TradingViewChart = () => {
       wickDownColor: '#E03737',
     });
 
-    setCandleSeries(series); // Save series for future use
+    setCandleSeries(series);
 
     const handleResize = () => {
       chart.applyOptions({ width: chartContainerRef.current.clientWidth });
@@ -114,7 +110,7 @@ const TradingViewChart = () => {
   useEffect(() => {
     if (!lastMessage || !candleSeries) return;
 
-    const messageText = lastMessage.data.text(); // Convert Blob to text
+    const messageText = lastMessage.data.text();
 
     messageText.then((text) => {
       try {
@@ -124,7 +120,6 @@ const TradingViewChart = () => {
           console.log('Successfully subscribed to ETH-PERP@kline_1m');
         }
 
-        // Check for incoming candlestick data
         if (message.channel === 'ETH-PERP@kline_1m' && message.data) {
           const newCandleData = message.data;
           const newCandle = {
@@ -154,6 +149,21 @@ const TradingViewChart = () => {
       }
     });
   }, [lastMessage, candleSeries]);
+
+  const takeSnapshot = () => {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const chartElement = chartContainerRef.current;
+
+    canvas.width = chartElement.clientWidth;
+    canvas.height = chartElement.clientHeight;
+    context.drawImage(chartElement, 0, 0);
+
+    const link = document.createElement('a');
+    link.download = 'chart-snapshot.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
 
   return (
     <Box

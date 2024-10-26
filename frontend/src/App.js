@@ -4,6 +4,7 @@ import TradingViewPage from './components/TradingViewPage';
 import Search from './components/Search';
 import { Box } from '@mui/material';
 import StatusBar from './components/StatusBar';
+import './App.css';
 
 const theme = createTheme({
   palette: {

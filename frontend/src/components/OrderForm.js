@@ -44,12 +44,12 @@ const OrderForm = () => {
     }
 
     setButtonClicked(true);
-    // Capture the button's position
+
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setConfettiSource({
-        x: rect.left + rect.width / 2 - 100, // Center the confetti
-        y: rect.top + rect.height / 2 - 100, // Center the confetti
+        x: rect.left + rect.width / 2 - 100,
+        y: rect.top + rect.height / 2 - 100,
         w: 200,
         h: 200,
       });
@@ -66,12 +66,14 @@ const OrderForm = () => {
         value={tabValue}
         onChange={handleTabChange}
         textColor='inherit'
-        indicatorColor='transparent'>
+        indicatorColor='transparent'
+        sx={{ minHeight: '40px' }}>
         <Tab
           value='LONG'
           label='LONG'
           sx={{
             width: '50%',
+            padding: '8px 0',
             color: tabValue === 'LONG' ? '#FF5A44' : 'white',
             borderBottom: tabValue === 'LONG' ? '2px solid #FF5A44' : 'none',
             '&:hover': {
@@ -84,6 +86,7 @@ const OrderForm = () => {
           label='SHORT'
           sx={{
             width: '50%',
+            padding: '8px 0',
             color: tabValue === 'SHORT' ? '#FF5A44' : 'white',
             borderBottom: tabValue === 'SHORT' ? '2px solid #FF5A44' : 'none',
             '&:hover': {
@@ -106,23 +109,28 @@ const OrderForm = () => {
           IconComponent={() => (
             <InputAdornment position='end'>
               <IconButton>
-                <RxCaretDown />
+                <RxCaretDown color='#AEADAD' />
               </IconButton>
             </InputAdornment>
           )}
           sx={{
             backgroundColor: '#1A1A1A',
-            color: 'white',
+            color: '#AEADAD',
             border: 'none',
             '& .MuiSelect-select': {
               padding: '12px 14px',
               '&:focus': {
                 outline: 'none',
+                border: 'none',
               },
             },
           }}>
-          <MenuItem value='MARKET'>MARKET</MenuItem>
-          <MenuItem value='LIMIT'>LIMIT</MenuItem>
+          <MenuItem value='MARKET' color='#AEADAD'>
+            MARKET
+          </MenuItem>
+          <MenuItem value='LIMIT' color='#AEADAD'>
+            LIMIT
+          </MenuItem>
         </Select>
       </div>
 
@@ -135,6 +143,15 @@ const OrderForm = () => {
           fullWidth
           variant='outlined'
           placeholder='0 USDC'
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <Typography color='#AEADAD'>USDC</Typography>
+                </InputAdornment>
+              ),
+            },
+          }}
           sx={{
             backgroundColor: '#1A1A1A',
             borderRadius: '5px',
@@ -229,7 +246,7 @@ const OrderForm = () => {
         sx={{
           margin: '5px 0',
           backgroundColor: '#1A1A1A',
-          color: 'white',
+          color: '#AEADAD',
           border: 'none',
           '& .MuiSelect-select': {
             padding: '12px 14px',
@@ -250,7 +267,9 @@ const OrderForm = () => {
             borderBottom: 'none',
           },
         }}>
-        <MenuItem value='MARKET'>Advanced</MenuItem>
+        <MenuItem value='MARKET' color='#AEADAD'>
+          Advanced
+        </MenuItem>
       </Select>
 
       {/* Buy Button */}
@@ -273,6 +292,7 @@ const OrderForm = () => {
           confettiSource={confettiSource}
           tweenDuration={100}
           recycle={false}
+          colors={['#4BC2A3']}
           drawShape={(ctx) => {
             ctx.beginPath();
             for (let i = 0; i < 22; i++) {
@@ -281,8 +301,8 @@ const OrderForm = () => {
               const y = (0.2 + 1.5 * angle) * Math.sin(angle);
               ctx.lineTo(x, y);
             }
-            ctx.stroke();
             ctx.closePath();
+            ctx.fill();
           }}
         />
       )}

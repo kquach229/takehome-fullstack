@@ -7,17 +7,17 @@ import { RxCaretDown } from 'react-icons/rx';
 const Search = () => {
   return (
     <Box
-      flexDirection={'row'}
-      alignItems={'center'}
-      justifyContent={'center'}
-      display={'flex'}>
+      display='flex'
+      flexDirection={{ xs: 'column', sm: 'row' }}
+      alignItems='center'
+      justifyContent='center'
+      sx={{ gap: { xs: '10px', sm: '0' }, width: '100%' }}>
       <TextField
         sx={{
           borderRadius: '2px',
-          height: '48px',
+          height: { xs: '40px', sm: '48px' },
           backgroundColor: '#1A1A1A',
           '& .MuiOutlinedInput-root': {
-            backgroundColor: '',
             '& fieldset': {
               borderColor: 'transparent',
             },
@@ -39,18 +39,21 @@ const Search = () => {
         placeholder='SEARCH'
         fullWidth
       />
-      <div
-        style={{
-          color: 'white',
+      <Box
+        sx={{
+          color: '#AEADAD',
           display: 'flex',
-          width: '20%',
-          marginLeft: '10px',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: { xs: '100%', sm: 'auto' },
+          marginLeft: { sm: '10px' },
           gap: '5px',
         }}>
-        <CiBellOn />
-        <span>0XFC...E63D1</span>
+        <CiBellOn fontSize='25px' />
+        <span style={{ whiteSpace: 'nowrap' }}>0XFC...E63D1</span>{' '}
+        {/* Prevent text wrapping */}
         <RxCaretDown />
-      </div>
+      </Box>
     </Box>
   );
 };
