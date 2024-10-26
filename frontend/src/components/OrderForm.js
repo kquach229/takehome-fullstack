@@ -27,12 +27,7 @@ const OrderForm = () => {
   };
 
   return (
-    <Box
-      p={3}
-      bgcolor='#161514'
-      borderRadius='10px'
-      color='white'
-      height={'550px'}>
+    <Box p={3} bgcolor='#161514' color='white' height={'600px'}>
       <Tabs
         value={tabValue}
         onChange={handleTabChange}
@@ -43,6 +38,7 @@ const OrderForm = () => {
           label='LONG'
           sx={{
             width: '50%',
+
             color: tabValue === 'LONG' ? '#FF5A44' : 'white',
             borderBottom: tabValue === 'LONG' ? '2px solid #FF5A44' : 'none',
             '&:hover': {

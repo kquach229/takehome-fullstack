@@ -68,7 +68,7 @@ const TradingViewChart = () => {
   useEffect(() => {
     const chart = createChart(chartContainerRef.current, {
       width: chartContainerRef.current.clientWidth,
-      height: 550,
+      height: 600,
       layout: { background: { color: '#1A1A1A' }, textColor: 'white' },
       grid: {
         vertLines: { color: '#424242' }, // Vertical gridline color

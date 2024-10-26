@@ -9,9 +9,10 @@ const TradingViewPage = () => {
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
   return (
     <Grid container spacing={2} sx={{ height: '100vh' }}>
-      <Grid item xs={8}>
+      <Grid item xs={12} md={8}>
         <Tabs
           value={tabValue}
           onChange={handleTabChange}
@@ -46,7 +47,7 @@ const TradingViewPage = () => {
         </Box>
       </Grid>
 
-      <Grid item xs={4} mt={5}>
+      <Grid item xs={12} md={4} mt={5}>
         <Box p={2} bgcolor='#000' color='white'>
           <OrderForm />
         </Box>
