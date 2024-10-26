@@ -1,22 +1,12 @@
 const express = require('express');
 const cors = require('cors');
+const fetch = require('node-fetch'); // Make sure to install this package: npm install node-fetch
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const WebSocket = require('ws');
-
-const server = new WebSocket.Server({ port: 8080 });
-
-server.on('connection', (socket) => {
-  socket.on('message', (message) => {
-    socket.send(`Roger that! ${message}`);
-  });
-
-  socket.send('Welcome to the WebSocket server!');
-});
-
+// Local emoji reactions data
 let emojiReactions = {
   '2024-06-24T00:00:00Z': [
     { userId: 'user1', emoji: '🚀' },
@@ -28,6 +18,7 @@ let emojiReactions = {
   ],
 };
 
+// Endpoint to add a reaction to emojiReactions
 app.post('/addReaction', (req, res) => {
   const { timestamp, userId, emoji } = req.body;
   if (!emojiReactions[timestamp]) {
@@ -37,8 +28,27 @@ app.post('/addReaction', (req, res) => {
   res.status(200).send('Reaction added');
 });
 
+// Endpoint to get all emoji reactions
 app.get('/getReactions', (req, res) => {
   res.json(emojiReactions);
+});
+
+// Proxy endpoint to handle external API requests and avoid CORS issues
+app.get('/api/ohlcv', async (req, res) => {
+  const { symbol, interval, startTime, endTime, countBack } = req.query;
+  const url = `https://serverprod.vest.exchange/v1/ohlcv/klines?symbol=${symbol}&interval=${interval}&startTime=${startTime}&endTime=${endTime}&countBack=${countBack}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching data from external API:', error);
+    res.status(500).send('Error fetching data');
+  }
 });
 
 app.listen(3001, () => {

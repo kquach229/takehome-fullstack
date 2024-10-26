@@ -1,148 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { Box } from '@mui/material';
+import useWebSocket from 'react-use-websocket';
 
 const TradingViewChart = () => {
+  const REST_URL = 'https://serverprod.vest.exchange/v1/ohlcv/klines';
+  const WS_URL =
+    'wss://wsprod.vest.exchange/ws-api?xwebsocketserver=restserver0&version=1.0';
+
   const chartContainerRef = useRef(null);
   const [candleSeries, setCandleSeries] = useState(null);
   const [candlestickData, setCandlestickData] = useState([]);
-  // eslint-disable-next-line
+
+  const { sendMessage, lastMessage } = useWebSocket(WS_URL, {
+    onOpen: () => {
+      console.log('WebSocket connection opened');
+      sendMessage(
+        JSON.stringify({
+          method: 'SUBSCRIBE',
+          params: ['ETH-PERP@kline_1m'],
+          id: 1,
+        })
+      );
+    },
+    shouldReconnect: () => true,
+  });
+
+  // Fetch initial candlestick data
   useEffect(() => {
-    const chart = createChart(chartContainerRef.current, {
-      width: chartContainerRef.current.clientWidth,
-      height: 550,
-      layout: {
-        background: '#1A1A1A',
-        textColor: 'white',
-      },
-      grid: {
-        vertLines: {
-          color: '#424242',
-          visible: true,
-          style: 0,
-        },
-        horzLines: {
-          color: '#424242',
-          visible: true,
-          style: 0,
-        },
-      },
-      crosshair: {
-        mode: 0,
-      },
-      rightPriceScale: {
-        borderColor: '#485c7b',
-      },
-      timeScale: {
-        borderColor: '#485c7b',
-        fixLeftEdge: true,
-        fixRightEdge: true,
-        timeVisible: true,
-        showTicks: true,
-      },
-    });
-
-    const series = chart.addCandlestickSeries({
-      upColor: '#4BC2A3',
-      downColor: '#E03737',
-      borderDownColor: '#E03737',
-      borderUpColor: '#4BC2A3',
-      wickDownColor: '#E03737',
-      wickUpColor: '#4BC2A3',
-    });
-
-    series.setData([
-      {
-        time: '2024-10-16',
-        open: 26660.6,
-        high: 26661.2,
-        low: 26660.5,
-        close: 26660.6,
-      },
-      {
-        time: '2024-10-17',
-        open: 26661.2,
-        high: 26662.3,
-        low: 26660.0,
-        close: 26661.0,
-      },
-      {
-        time: '2024-10-18',
-        open: 26661.0,
-        high: 26663.5,
-        low: 26658.7,
-        close: 26660.8,
-      },
-      {
-        time: '2024-10-19',
-        open: 26660.8,
-        high: 26664.0,
-        low: 26659.0,
-        close: 26660.6,
-      },
-      {
-        time: '2024-10-20',
-        open: 26660.5,
-        high: 26665.0,
-        low: 26660.2,
-        close: 26662.0,
-      },
-      {
-        time: '2024-10-21',
-        open: 26662.0,
-        high: 26666.5,
-        low: 26661.0,
-        close: 26665.5,
-      },
-      {
-        time: '2024-10-22',
-        open: 26665.5,
-        high: 26670.0,
-        low: 26662.5,
-        close: 26669.0,
-      },
-      {
-        time: '2024-10-23',
-        open: 26669.0,
-        high: 26671.2,
-        low: 26667.0,
-        close: 26670.5,
-      },
-      {
-        time: '2024-10-24',
-        open: 26670.5,
-        high: 26675.0,
-        low: 26668.0,
-        close: 26674.0,
-      },
-      {
-        time: '2024-10-25',
-        open: 26674.0,
-        high: 26680.0,
-        low: 26673.0,
-        close: 26678.0,
-      },
-      {
-        time: '2024-10-26',
-        open: 26678.0,
-        high: 26682.0,
-        low: 26676.5,
-        close: 26681.5,
-      },
-    ]);
-
-    setCandleSeries(series);
-
     const fetchCandlestickData = async () => {
       const now = Date.now();
-      const startTime = now - 30 * 60 * 1000;
-      const countBack = 30;
-
-      console.log(candlestickData);
+      const endTime = Math.floor(now * 1e6);
+      const startTime = Math.floor((now - 30 * 60 * 1000) * 1e6); // Last 30 minutes
 
       try {
         const response = await fetch(
-          `https://serverprod.vest.exchange/v1/ohlcv/klines?symbol=ETH-PERP&interval=1m&startTime=${startTime}&endTime=${now}&countBack=${countBack}`
+          `${REST_URL}?symbol=ETH-PERP&interval=1m&startTime=${startTime}&endTime=${endTime}&countBack=100`
         );
 
         if (!response.ok) {
@@ -150,20 +43,19 @@ const TradingViewChart = () => {
         }
 
         const data = await response.json();
+        const formattedData = data.map((item) => ({
+          time: Math.floor(item[0] / 1000), // Convert from milliseconds to seconds
+          open: parseFloat(item[1]),
+          high: parseFloat(item[2]),
+          low: parseFloat(item[3]),
+          close: parseFloat(item[4]),
+        }));
 
-        if (Array.isArray(data)) {
-          const formattedData = data.map((item) => ({
-            time: item[0],
-            open: item[1],
-            high: item[2],
-            low: item[3],
-            close: item[4],
-          }));
+        setCandlestickData(formattedData);
 
-          setCandlestickData(formattedData);
+        // Update the chart with fetched data
+        if (candleSeries) {
           candleSeries.setData(formattedData);
-        } else {
-          console.error('Expected data to be an array:', data);
         }
       } catch (error) {
         console.error('Error fetching candlestick data:', error);
@@ -171,63 +63,87 @@ const TradingViewChart = () => {
     };
 
     fetchCandlestickData();
+  }, [candleSeries]); // Only runs when candleSeries is set
 
-    const ws = new WebSocket(
-      'wss://wsprod.vest.exchange/ws-api?xwebsocketserver=restserver0&version=1.0'
-    );
+  useEffect(() => {
+    const chart = createChart(chartContainerRef.current, {
+      width: chartContainerRef.current.clientWidth,
+      height: 550,
+      layout: { background: { color: '#1A1A1A' }, textColor: 'white' },
+      grid: {
+        vertLines: { color: '#424242' },
+        horzLines: { color: '#424242' },
+      },
+      crosshair: { mode: 0 },
+      rightPriceScale: { borderColor: '#485c7b' },
+      timeScale: { borderColor: '#485c7b', timeVisible: true },
+    });
 
-    ws.onopen = () => {
-      ws.send(
-        JSON.stringify({
-          method: 'SUBSCRIBE',
-          params: ['ETH-PERP@kline_1m'],
-        })
-      );
-    };
+    const series = chart.addCandlestickSeries({
+      upColor: '#4BC2A3',
+      downColor: '#E03737',
+      borderUpColor: '#4BC2A3',
+      borderDownColor: '#E03737',
+      wickUpColor: '#4BC2A3',
+      wickDownColor: '#E03737',
+    });
 
-    ws.onmessage = (event) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const message = JSON.parse(e.target.result);
-          if (message.channel === 'ETH-PERP@kline_1m') {
-            const { k } = message.data;
-            const newCandle = {
-              time: k.t,
-              open: k.o,
-              high: k.h,
-              low: k.l,
-              close: k.c,
-            };
-            setCandlestickData((prev) => {
-              const updatedData = [...prev, newCandle].slice(-100);
-              candleSeries.setData(updatedData);
-              return updatedData;
-            });
-          }
-        } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
-        }
-      };
-      reader.readAsText(event.data);
-    };
-
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
+    setCandleSeries(series); // Save series for future use
 
     const handleResize = () => {
       chart.applyOptions({ width: chartContainerRef.current.clientWidth });
     };
-
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      ws.close();
       chart.remove();
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    if (!lastMessage || !candleSeries) return;
+
+    const messageText = lastMessage.data.text(); // Convert Blob to text
+
+    messageText.then((text) => {
+      try {
+        const message = JSON.parse(text);
+
+        if (message.method === 'SUBSCRIBE' && message.result) {
+          console.log('Successfully subscribed to ETH-PERP@kline_1m');
+        }
+
+        // Check for incoming candlestick data
+        if (message.channel === 'ETH-PERP@kline_1m' && message.data) {
+          const newCandleData = message.data;
+          const newCandle = {
+            time: Math.floor(newCandleData[0] / 1000),
+            open: parseFloat(newCandleData[1]),
+            high: parseFloat(newCandleData[2]),
+            low: parseFloat(newCandleData[3]),
+            close: parseFloat(newCandleData[4]),
+          };
+
+          setCandlestickData((prev) => {
+            const updatedData = [...prev, newCandle];
+
+            const uniqueSortedData = Array.from(
+              new Map(updatedData.map((item) => [item.time, item])).values()
+            ).sort((a, b) => a.time - b.time);
+
+            const finalData = uniqueSortedData.slice(-100);
+
+            candleSeries.setData(finalData);
+
+            return finalData;
+          });
+        }
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    });
+  }, [lastMessage, candleSeries]);
 
   return (
     <Box
