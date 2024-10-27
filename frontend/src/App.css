@@ -1,7 +1,14 @@
+/* src/index.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: black;
+@layer base {
+  body {
+    @apply font-sans;
+
+    background-color: black;
+          font-family: 'IBM Plex Mono', monospace;
+  }
 }

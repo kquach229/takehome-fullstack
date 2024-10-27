@@ -18,13 +18,15 @@ const StatusBar = () => {
           margin: '5px 0',
           display: 'flex',
           alignItems: 'center',
+          height: '25px',
+          gap: '8px',
         }}>
         <img src='/btc.svg' height='25px' width='25px' alt='btc' />
         <Typography
-          fontSize={{ xs: '12px', sm: '14px' }}
+          fontSize='14px'
           fontWeight={700}
-          ml={2}
-          color='white'>
+          lineHeight='18.2px'
+          color='#F2F1F0'>
           BTC / BITCOIN
         </Typography>
       </span>
@@ -33,49 +35,112 @@ const StatusBar = () => {
           margin: '5px 0',
           display: 'flex',
           flexDirection: 'column',
+          gap: '4px',
         }}>
-        <Typography fontSize={{ xs: '12px', sm: '14px' }}>Price</Typography>
-        <Typography fontWeight={700} color='white'>
+        <Typography
+          color='#AEADAD'
+          fontSize='10px'
+          fontWeight='400'
+          lineHeight='15px'>
+          Price
+        </Typography>
+        <Typography
+          fontWeight={700}
+          fontSize='14px'
+          letterSpacing='2%'
+          color='#F2F1F0'>
           $31,119.01
         </Typography>
       </span>
 
       <span
-        style={{ margin: '5px 0', display: 'flex', flexDirection: 'column' }}>
-        <Typography fontSize={{ xs: '12px', sm: '14px' }}>
+        style={{
+          margin: '5px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+        }}>
+        <Typography
+          color='#AEADAD'
+          fontSize='10px'
+          fontWeight='400'
+          lineHeight='15px'>
           24H CHANGE
         </Typography>
-        <Typography color='#4BC2A3' fontWeight='600'>
+        <Typography
+          color='#4BC2A3'
+          fontSize='14px'
+          fontWeight={700}
+          lineHeight='18.2px'>
           +22.3USDC (+7.5)
         </Typography>
       </span>
 
       <span
-        style={{ margin: '5px 0', display: 'flex', flexDirection: 'column' }}>
-        <Typography fontSize={{ xs: '12px', sm: '14px' }}>
+        style={{
+          margin: '5px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+        }}>
+        <Typography
+          color='#AEADAD'
+          fontSize='10px'
+          fontWeight='400'
+          lineHeight='15px'>
           1H FUNDING
         </Typography>
-        <Typography color='#4BC2A3' fontWeight='600'>
+        <Typography
+          color='#4BC2A3'
+          fontSize='14px'
+          fontWeight={700}
+          lineHeight='18.2px'>
           0.00012%
         </Typography>
       </span>
 
       <span
-        style={{ margin: '5px 0', display: 'flex', flexDirection: 'column' }}>
-        <Typography fontSize={{ xs: '12px', sm: '14px' }}>
+        style={{
+          margin: '5px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+        }}>
+        <Typography
+          color='#AEADAD'
+          fontSize='10px'
+          fontWeight='400'
+          lineHeight='15px'>
           LONG OPEN INTEREST
         </Typography>
-        <Typography color='#4BC2A3' fontWeight='600'>
+        <Typography
+          color='#4BC2A3'
+          fontSize='14px'
+          fontWeight={700}
+          lineHeight='18.2px'>
           8.871 BTC
         </Typography>
       </span>
 
       <span
-        style={{ margin: '5px 0', display: 'flex', flexDirection: 'column' }}>
-        <Typography fontSize={{ xs: '12px', sm: '14px' }}>
+        style={{
+          margin: '5px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+        }}>
+        <Typography
+          color='#AEADAD'
+          fontSize='10px'
+          fontWeight='400'
+          lineHeight='15px'>
           SHORT OPEN INTEREST
         </Typography>
-        <Typography color='#4BC2A3' fontWeight='600'>
+        <Typography
+          color='#4BC2A3'
+          fontSize='14px'
+          fontWeight={700}
+          lineHeight='18.2px'>
           8.871 BTC
         </Typography>
       </span>

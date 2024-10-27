@@ -10,10 +10,42 @@ import {
   InputAdornment,
   IconButton,
   Slider,
+  Divider,
 } from '@mui/material';
 import { useState, useRef } from 'react';
 import { RxCaretDown } from 'react-icons/rx';
 import Confetti from 'react-confetti';
+
+const marks = [
+  {
+    value: -0.00000005,
+    label: '2X',
+  },
+  {
+    value: -0.000000025,
+    label: '5X',
+  },
+  {
+    value: 0,
+    label: '10X',
+  },
+  {
+    value: 0.000000025,
+    label: '25X',
+  },
+  {
+    value: 0.00000005,
+    label: '50X',
+  },
+  {
+    value: 0.000000075,
+    label: '100X',
+  },
+  {
+    value: 0.0000001,
+    label: '128X',
+  },
+];
 
 const OrderForm = () => {
   const [tabValue, setTabValue] = useState('LONG');
@@ -61,7 +93,13 @@ const OrderForm = () => {
   };
 
   return (
-    <Box p={3} bgcolor='#161514' color='white' height={'600px'}>
+    <Box
+      p={3}
+      pt={0}
+      bgcolor='#161514'
+      color='white'
+      height='100%'
+      padding='8px '>
       <Tabs
         value={tabValue}
         onChange={handleTabChange}
@@ -72,6 +110,9 @@ const OrderForm = () => {
           value='LONG'
           label='LONG'
           sx={{
+            fontSize: '14px',
+            fontWeight: '400',
+            lineHeight: '16.8px',
             width: '50%',
             padding: '8px 0',
             color: tabValue === 'LONG' ? '#FF5A44' : 'white',
@@ -85,6 +126,9 @@ const OrderForm = () => {
           value='SHORT'
           label='SHORT'
           sx={{
+            fontSize: '14px',
+            fontWeight: '400',
+            lineHeight: '16.8px',
             width: '50%',
             padding: '8px 0',
             color: tabValue === 'SHORT' ? '#FF5A44' : 'white',
@@ -97,14 +141,30 @@ const OrderForm = () => {
       </Tabs>
 
       {/* Order Type Select */}
-      <div style={{ margin: '15px 0' }}>
-        <Typography fontSize='14px' mb={2}>
-          Order Type
-        </Typography>
+      <div style={{ margin: '10px 0' }}>
+        <Box display='flex' mt={3} justifyContent='space-between' mb={'2px'}>
+          <Typography fontSize='14px' fontWeight={400} lineHeight='19.6px'>
+            Order Type
+          </Typography>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography
+              color='#AEADAD'
+              fontWeight={400}
+              fontSize='14px'
+              lineHeight='19.6px'>
+              Open Price
+            </Typography>
+            <Typography fontWeight={400} fontSize='14px' lineHeight='18px'>
+              30,021.29 USDC
+            </Typography>
+          </div>
+        </Box>
+
         <Select
           labelId='demo-multiple-name-label'
           fullWidth
           value={orderType}
+          variant='filled'
           onChange={handleOrderType}
           IconComponent={() => (
             <InputAdornment position='end'>
@@ -115,14 +175,35 @@ const OrderForm = () => {
           )}
           sx={{
             backgroundColor: '#1A1A1A',
+            width: '196px',
+            height: '48px',
             color: '#AEADAD',
             border: 'none',
+
             '& .MuiSelect-select': {
               padding: '12px 14px',
+              paddingLeft: '4px',
+              paddingRight: '4px',
+              ml: 1,
               '&:focus': {
                 outline: 'none',
-                border: 'none',
               },
+              '&:hover': {
+                backgroundColor: 'transparent',
+                color: '#AEADAD',
+              },
+            },
+            '&:before': {
+              border: 'none',
+            },
+            '&:after': {
+              border: 'none',
+            },
+            '& .MuiFilledInput-underline:before': {
+              borderBottom: 'none',
+            },
+            '& .MuiFilledInput-underline:after': {
+              borderBottom: 'none',
             },
           }}>
           <MenuItem value='MARKET' color='#AEADAD'>
@@ -134,59 +215,113 @@ const OrderForm = () => {
         </Select>
       </div>
 
-      {/* Size Input */}
-      <div style={{ margin: '15px 0' }}>
-        <Typography fontSize='14px' mb={2}>
-          Size
-        </Typography>
-        <TextField
-          fullWidth
-          variant='outlined'
-          placeholder='0 USDC'
-          slotProps={{
-            input: {
-              endAdornment: (
-                <InputAdornment position='end'>
-                  <Typography color='#AEADAD'>USDC</Typography>
-                </InputAdornment>
-              ),
-            },
-          }}
+      <div style={{ margin: '10px 0' }}>
+        <Box mt={3} mb='2px'>
+          <Typography
+            mb='2px'
+            fontSize='14px'
+            fontWeight={400}
+            lineHeight='19.6px'>
+            Size
+          </Typography>
+          <TextField
+            fullWidth
+            variant='outlined'
+            placeholder='0 USDC'
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <Typography fontSize='8.66px' color='#AEADAD'>
+                      USDC
+                    </Typography>
+                  </InputAdornment>
+                ),
+              },
+            }}
+            sx={{
+              backgroundColor: '#1A1A1A',
+              borderRadius: '2px',
+              marginBottom: '8px',
+              height: '48px',
+
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  border: 'none',
+                },
+                '&:hover fieldset': {
+                  border: 'none',
+                },
+                '&.Mui-focused fieldset': {
+                  border: 'none',
+                },
+              },
+            }}
+          />
+          <Typography
+            fontSize={'14px'}
+            fontWeight={400}
+            lineHeight='19.6px'
+            color='#898989'>
+            Up to 1,458.173
+          </Typography>
+        </Box>
+      </div>
+
+      <Box>
+        <Box display='flex' alignItems='center' justifyContent='space-between'>
+          <Typography
+            fontSize='14px'
+            fontWeight={400}
+            lineHeight='19.6px'
+            mt={1}
+            color='#AEADAD'>
+            Leverage
+          </Typography>
+          <Typography
+            mt={1}
+            color='#F2F1F0'
+            fontWeight={700}
+            fontSize='14px'
+            letterSpacing='2%'
+            lineHeight='18.2px'>
+            0,00 X
+          </Typography>
+        </Box>
+        <Slider
+          aria-label='Small steps'
+          defaultValue={5}
+          step={0.00000001}
+          marks={marks}
+          min={-0.00000005}
+          max={0.0000001}
+          valueLabelDisplay='auto'
           sx={{
-            backgroundColor: '#1A1A1A',
-            borderRadius: '5px',
-            marginBottom: '16px',
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                border: 'none',
-              },
-              '&:hover fieldset': {
-                border: 'none',
-              },
-              '&.Mui-focused fieldset': {
-                border: 'none',
+            height: '13px',
+            borderRadius: '0px',
+            '& .MuiSlider-markLabel': {
+              fontSize: '10px',
+              fontWeight: '400',
+              lineHeight: '15px',
+              textAlign: 'right',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              marginTop: '10px',
+            },
+            '& .MuiSlider-track': {
+              backgroundColor: (value) =>
+                value > -0.00000005 ? '#1A1A1A' : '#4BC2A3',
+            },
+            '& .MuiSlider-thumb': {
+              '&:before': {
+                backgroundColor: '#AEADAD',
               },
             },
           }}
         />
-        <Typography fontSize={'14px'} fontWeight={400} color='#898989'>
-          Up to 1,458.173
-        </Typography>
-      </div>
-
-      {/* Leverage Slider */}
-      <Typography fontSize='14px' mb={2} color='#AEADAD'>
-        Leverage
-      </Typography>
-      <Slider
-        aria-label='Small steps'
-        defaultValue={0.00000005}
-        step={0.00000001}
-        marks
-        min={-0.00000005}
-        max={0.0000001}
-        valueLabelDisplay='auto'
-      />
+      </Box>
 
       {/* Additional Information */}
       <div
@@ -195,10 +330,14 @@ const OrderForm = () => {
           justifyContent: 'space-between',
           margin: '10px 0',
         }}>
-        <Typography fontSize='14px' fontWeight={400} color='#AEADAD'>
+        <Typography
+          fontSize='14px'
+          fontWeight={400}
+          lineHeight='19.6px'
+          color='#AEADAD'>
           Liquidation Price
         </Typography>
-        <Typography fontSize='14px' fontWeight={400}>
+        <Typography color='#F2F1F0' fontSize='14px' fontWeight={400}>
           300,212 USDC
         </Typography>
       </div>
@@ -208,10 +347,14 @@ const OrderForm = () => {
           justifyContent: 'space-between',
           margin: '10px 0',
         }}>
-        <Typography fontSize='14px' fontWeight={400} color='#AEADAD'>
+        <Typography
+          lineHeight='19.6px'
+          fontSize='14px'
+          fontWeight={400}
+          color='#AEADAD'>
           Slippage
         </Typography>
-        <Typography fontSize='14px' fontWeight={400}>
+        <Typography color='#F2F1F0' fontSize='14px' fontWeight={400}>
           1.20 USDC (0.3%)
         </Typography>
       </div>
@@ -221,7 +364,11 @@ const OrderForm = () => {
           justifyContent: 'space-between',
           margin: '10px 0',
         }}>
-        <Typography fontSize='14px' fontWeight={400} color='#AEADAD'>
+        <Typography
+          lineHeight='19.6px'
+          fontSize='14px'
+          fontWeight={400}
+          color='#AEADAD'>
           FEE
         </Typography>
         <Typography fontSize='14px' fontWeight={400}>
@@ -239,19 +386,28 @@ const OrderForm = () => {
         IconComponent={() => (
           <InputAdornment position='end'>
             <IconButton>
-              <RxCaretDown />
+              <RxCaretDown color='#AEADAD' />
             </IconButton>
           </InputAdornment>
         )}
         sx={{
           margin: '5px 0',
-          backgroundColor: '#1A1A1A',
+          backgroundColor: '#161514',
           color: '#AEADAD',
           border: 'none',
+          height: '24px',
+
           '& .MuiSelect-select': {
             padding: '12px 14px',
+            paddingLeft: '4px',
+            paddingRight: '4px',
+            ml: 0,
             '&:focus': {
               outline: 'none',
+            },
+            '&:hover': {
+              backgroundColor: 'transparent',
+              color: '#AEADAD',
             },
           },
           '&:before': {
@@ -267,7 +423,15 @@ const OrderForm = () => {
             borderBottom: 'none',
           },
         }}>
-        <MenuItem value='MARKET' color='#AEADAD'>
+        <MenuItem
+          value='MARKET'
+          color='#AEADAD'
+          sx={{
+            '&:hover': {
+              backgroundColor: 'transparent',
+              color: '#AEADAD',
+            },
+          }}>
           Advanced
         </MenuItem>
       </Select>
@@ -278,7 +442,13 @@ const OrderForm = () => {
         ref={buttonRef}
         onClick={handleClickBuy}
         variant='contained'
-        style={{ background: '#4BC2A3' }}
+        style={{
+          background: '#4BC2A3',
+          height: '44px',
+          borderRadius: '2px',
+          padding: '11px 16px 11px 16px',
+          marginTop: '25px',
+        }}
         size='large'>
         {buttonClicked ? 'YOU JUST EARNED 200 ZK-TOKENS' : 'BUY / LONG'}
       </Button>

@@ -11,6 +11,7 @@ const TradingViewChart = () => {
   const chartContainerRef = useRef(null);
   const [candleSeries, setCandleSeries] = useState(null);
   const [candlestickData, setCandlestickData] = useState([]);
+  const [emojiPositions, setEmojiPositions] = useState([]);
 
   const { sendMessage, lastMessage } = useWebSocket(WS_URL, {
     onOpen: () => {
@@ -150,30 +151,71 @@ const TradingViewChart = () => {
     });
   }, [lastMessage, candleSeries]);
 
-  const takeSnapshot = () => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    const chartElement = chartContainerRef.current;
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const emoji = e.dataTransfer.getData('text/plain');
+    const rect = chartContainerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    canvas.width = chartElement.clientWidth;
-    canvas.height = chartElement.clientHeight;
-    context.drawImage(chartElement, 0, 0);
-
-    const link = document.createElement('a');
-    link.download = 'chart-snapshot.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+    setEmojiPositions((prev) => [...prev, { x, y, emoji }]);
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const emojiList = ['🚀', '😍', '😡', '😭', '😱', '👎'];
+
   return (
-    <Box
-      ref={chartContainerRef}
-      sx={{
-        width: '100%',
-        height: '100%',
-        position: 'relative',
-      }}
-    />
+    <Box onDrop={handleDrop} onDragOver={handleDragOver} position='relative'>
+      <Box ref={chartContainerRef} />
+      <Box
+        position='absolute'
+        display={'flex'}
+        flexDirection='row'
+        left={0}
+        top={0}
+        zIndex={25}>
+        {emojiPositions.map((pos, index) => (
+          <div
+            key={index}
+            style={{
+              position: 'absolute',
+              left: pos.x,
+              top: pos.y,
+              fontSize: '24px',
+              pointerEvents: 'none',
+            }}>
+            {pos.emoji}
+          </div>
+        ))}
+      </Box>
+      <Box
+        display='flex'
+        flexDirection='row'
+        sx={{
+          backgroundColor: '#252525',
+          borderRadius: '24px',
+          padding: '8px 16px 8px 16px',
+        }}
+        p={2}
+        bgcolor='rgba(0, 0, 0, 0.5)'
+        position='absolute'
+        top='650px'
+        zIndex={2}>
+        {emojiList.map((emoji) => (
+          <Button
+            key={emoji}
+            draggable
+            onDragStart={(e) => {
+              e.dataTransfer.setData('text/plain', emoji);
+            }}>
+            {emoji}
+          </Button>
+        ))}
+      </Box>
+    </Box>
   );
 };
 
