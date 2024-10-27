@@ -198,21 +198,26 @@ const TradingViewChart = () => {
           backgroundColor: '#252525',
           borderRadius: '24px',
           padding: '8px 16px 8px 16px',
+          left: '0',
         }}
-        p={2}
         bgcolor='rgba(0, 0, 0, 0.5)'
         position='absolute'
         top='650px'
+        height='41px'
+        width='260px'
+        justifyContent='space-evenly'
+        gap={2}
         zIndex={2}>
         {emojiList.map((emoji) => (
-          <Button
+          <span
+            style={{ cursor: 'pointer' }}
             key={emoji}
             draggable
             onDragStart={(e) => {
               e.dataTransfer.setData('text/plain', emoji);
             }}>
             {emoji}
-          </Button>
+          </span>
         ))}
       </Box>
     </Box>

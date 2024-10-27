@@ -14,7 +14,12 @@ const TradingViewPage = () => {
         </Box>
       </Grid>
       <Grid item xs={12} md={4}>
-        <Box height='650px' bgcolor='#161514' p={2} color='white' mt={2}>
+        <Box
+          height='650px'
+          bgcolor='#161514'
+          p={2}
+          color='white'
+          mt={{ xs: 8, md: 2 }}>
           <OrderForm />
         </Box>
       </Grid>
