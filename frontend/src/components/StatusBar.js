@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Hidden, Typography } from '@mui/material';
 import React from 'react';
 
 const StatusBar = () => {
@@ -6,8 +6,9 @@ const StatusBar = () => {
     <Box
       display='flex'
       flexDirection={{ xs: 'column', sm: 'row' }}
-      justifyContent='space-between'
-      alignItems='center'
+      justifyContent={{ xs: 'flex-start', sm: 'space-between' }}
+      textAlign='left'
+      alignItems={{ xs: 'flex-start', sm: 'center' }}
       height='100%'
       color='grey'
       p={{ xs: '5px', sm: '10px 0' }}
@@ -122,10 +123,11 @@ const StatusBar = () => {
         </Typography>
       </span>
 
-      <span
+      <Box
+        display={{ xs: 'flex', sm: 'none', md: 'flex' }}
         style={{
           margin: '5px 0',
-          display: 'flex',
+
           flexDirection: 'column',
           gap: '4px',
         }}>
@@ -143,7 +145,7 @@ const StatusBar = () => {
           lineHeight='18.2px'>
           8.871 BTC
         </Typography>
-      </span>
+      </Box>
     </Box>
   );
 };
