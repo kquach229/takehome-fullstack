@@ -322,6 +322,17 @@ const OrderForm = () => {
           min={2}
           max={128}
           valueLabelDisplay='auto'
+          componentsProps={{
+            mark: {
+              sx: {
+                top: 12,
+                width: '2px',
+                height: '16px',
+                backgroundColor: '#818181',
+                transform: 'translateX(1px)',
+              },
+            },
+          }}
           sx={{
             height: '13px',
             borderRadius: '0px',
@@ -339,6 +350,12 @@ const OrderForm = () => {
             '& .MuiSlider-track': {
               backgroundColor: (value) =>
                 value > -0.00000005 ? '#1A1A1A' : '#4BC2A3',
+            },
+            '& .MuiSlider-rail': {
+              backgroundColor: '#1A1A1A',
+              opacity: 1,
+              height: '13px',
+              borderRadius: '0px',
             },
             '& .MuiSlider-thumb': {
               '&:before': {
