@@ -18,31 +18,24 @@ import Confetti from 'react-confetti';
 
 const marks = [
   {
-    value: -0.00000005,
+    value: 2,
     label: '2X',
   },
+
   {
-    value: -0.000000025,
-    label: '5X',
-  },
-  {
-    value: 0,
-    label: '10X',
-  },
-  {
-    value: 0.000000025,
+    value: 25,
     label: '25X',
   },
   {
-    value: 0.00000005,
+    value: 50,
     label: '50X',
   },
   {
-    value: 0.000000075,
+    value: 100,
     label: '100X',
   },
   {
-    value: 0.0000001,
+    value: 128,
     label: '128X',
   },
 ];
@@ -50,6 +43,7 @@ const marks = [
 const OrderForm = () => {
   const [tabValue, setTabValue] = useState('LONG');
   const [orderType, setOrderType] = useState('MARKET');
+  const [leverage, setLeverage] = useState(5);
   const [confettiSource, setConfettiSource] = useState({
     x: 0,
     y: 0,
@@ -64,6 +58,10 @@ const OrderForm = () => {
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+
+  const handleLeverageChange = (event, newValue) => {
+    setLeverage(newValue);
   };
 
   const handleOrderType = (event) => {
@@ -285,16 +283,18 @@ const OrderForm = () => {
             fontSize='14px'
             letterSpacing='2%'
             lineHeight='18.2px'>
-            0,00 X
+            {leverage} X
           </Typography>
         </Box>
         <Slider
           aria-label='Small steps'
           defaultValue={5}
-          step={0.00000001}
+          onChange={handleLeverageChange}
+          step={1}
           marks={marks}
-          min={-0.00000005}
-          max={0.0000001}
+          value={leverage}
+          min={2}
+          max={128}
           valueLabelDisplay='auto'
           sx={{
             height: '13px',
