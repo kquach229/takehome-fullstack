@@ -4,7 +4,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"IBM Plex Mono"', 'monospace'],
+        sans: ['IBM Plex Mono', 'monospace'],
+        figtree: ['Figtree', 'sans-serif'],
+        playfair: ['Playfair Display', 'serif'],
       },
     },
   },

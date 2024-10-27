@@ -41,6 +41,7 @@ const StatusBar = () => {
         <Typography
           color='#AEADAD'
           fontSize='10px'
+          fontFamily={'IBM Plex Mono'}
           fontWeight='400'
           lineHeight='15px'>
           Price
@@ -65,6 +66,7 @@ const StatusBar = () => {
           color='#AEADAD'
           fontSize='10px'
           fontWeight='400'
+          fontFamily={'IBM Plex Mono'}
           lineHeight='15px'>
           24H CHANGE
         </Typography>
@@ -88,6 +90,7 @@ const StatusBar = () => {
           color='#AEADAD'
           fontSize='10px'
           fontWeight='400'
+          fontFamily={'IBM Plex Mono'}
           lineHeight='15px'>
           1H FUNDING
         </Typography>
@@ -109,6 +112,7 @@ const StatusBar = () => {
         }}>
         <Typography
           color='#AEADAD'
+          fontFamily={'IBM Plex Mono'}
           fontSize='10px'
           fontWeight='400'
           lineHeight='15px'>
@@ -134,6 +138,7 @@ const StatusBar = () => {
         <Typography
           color='#AEADAD'
           fontSize='10px'
+          fontFamily={'IBM Plex Mono'}
           fontWeight='400'
           lineHeight='15px'>
           SHORT OPEN INTEREST

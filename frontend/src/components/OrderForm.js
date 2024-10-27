@@ -96,20 +96,23 @@ const OrderForm = () => {
       pt={0}
       bgcolor='#161514'
       color='white'
-      height='100%'
+      fontFamily={'IBM Plex Mono'}
       padding='8px '>
       <Tabs
         value={tabValue}
         onChange={handleTabChange}
+        fontFamily={'IBM Plex Mono'}
         textColor='inherit'
         indicatorColor='transparent'
         sx={{ minHeight: '40px' }}>
         <Tab
           value='LONG'
           label='LONG'
+          fontFamily={'IBM Plex Mono'}
           sx={{
             fontSize: '14px',
             fontWeight: '400',
+            fontFamily: 'IBM Plex Mono',
             lineHeight: '16.8px',
             width: '50%',
             padding: '8px 0',
@@ -127,6 +130,7 @@ const OrderForm = () => {
             fontSize: '14px',
             fontWeight: '400',
             lineHeight: '16.8px',
+            fontFamily: 'IBM Plex Mono',
             width: '50%',
             padding: '8px 0',
             color: tabValue === 'SHORT' ? '#FF5A44' : 'white',
@@ -141,18 +145,27 @@ const OrderForm = () => {
       {/* Order Type Select */}
       <div style={{ margin: '10px 0' }}>
         <Box display='flex' mt={3} justifyContent='space-between' mb={'2px'}>
-          <Typography fontSize='14px' fontWeight={400} lineHeight='19.6px'>
+          <Typography
+            fontFamily={'IBM Plex Mono'}
+            fontSize='14px'
+            fontWeight={400}
+            lineHeight='19.6px'>
             Order Type
           </Typography>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Typography
               color='#AEADAD'
               fontWeight={400}
+              fontFamily={'IBM Plex Mono'}
               fontSize='14px'
               lineHeight='19.6px'>
               Open Price
             </Typography>
-            <Typography fontWeight={400} fontSize='14px' lineHeight='18px'>
+            <Typography
+              style={{ fontFamily: 'IBM Plex Mono' }}
+              fontWeight={400}
+              fontSize='14px'
+              lineHeight='18px'>
               30,021.29 USDC
             </Typography>
           </div>
@@ -162,6 +175,7 @@ const OrderForm = () => {
           labelId='demo-multiple-name-label'
           fullWidth
           value={orderType}
+          fontFamily={'IBM Plex Mono'}
           variant='filled'
           onChange={handleOrderType}
           IconComponent={() => (
@@ -173,6 +187,7 @@ const OrderForm = () => {
           )}
           sx={{
             backgroundColor: '#1A1A1A',
+            fontFamily: 'IBM Plex Mono',
             width: '196px',
             height: '48px',
             color: '#AEADAD',
@@ -204,10 +219,16 @@ const OrderForm = () => {
               borderBottom: 'none',
             },
           }}>
-          <MenuItem value='MARKET' color='#AEADAD'>
+          <MenuItem
+            sx={{ fontFamily: 'IBM Plex Mono' }}
+            value='MARKET'
+            color='#AEADAD'>
             MARKET
           </MenuItem>
-          <MenuItem value='LIMIT' color='#AEADAD'>
+          <MenuItem
+            sx={{ fontFamily: 'IBM Plex Mono' }}
+            value='LIMIT'
+            color='#AEADAD'>
             LIMIT
           </MenuItem>
         </Select>
@@ -218,6 +239,7 @@ const OrderForm = () => {
           <Typography
             mb='2px'
             fontSize='14px'
+            fontFamily={'IBM Plex Mono'}
             fontWeight={400}
             lineHeight='19.6px'>
             Size
@@ -258,6 +280,7 @@ const OrderForm = () => {
           />
           <Typography
             fontSize={'14px'}
+            fontFamily={'IBM Plex Mono'}
             fontWeight={400}
             lineHeight='19.6px'
             color='#898989'>
@@ -270,6 +293,7 @@ const OrderForm = () => {
         <Box display='flex' alignItems='center' justifyContent='space-between'>
           <Typography
             fontSize='14px'
+            fontFamily={'IBM Plex Mono'}
             fontWeight={400}
             lineHeight='19.6px'
             mt={1}
@@ -279,6 +303,7 @@ const OrderForm = () => {
           <Typography
             mt={1}
             color='#F2F1F0'
+            fontFamily={'IBM Plex Mono'}
             fontWeight={700}
             fontSize='14px'
             letterSpacing='2%'
@@ -288,6 +313,7 @@ const OrderForm = () => {
         </Box>
         <Slider
           aria-label='Small steps'
+          fontFamily={'IBM Plex Mono'}
           defaultValue={5}
           onChange={handleLeverageChange}
           step={1}
@@ -333,11 +359,16 @@ const OrderForm = () => {
         <Typography
           fontSize='14px'
           fontWeight={400}
+          fontFamily={'IBM Plex Mono'}
           lineHeight='19.6px'
           color='#AEADAD'>
           Liquidation Price
         </Typography>
-        <Typography color='#F2F1F0' fontSize='14px' fontWeight={400}>
+        <Typography
+          fontFamily={'IBM Plex Mono'}
+          color='#F2F1F0'
+          fontSize='14px'
+          fontWeight={400}>
           300,212 USDC
         </Typography>
       </div>
@@ -349,12 +380,17 @@ const OrderForm = () => {
         }}>
         <Typography
           lineHeight='19.6px'
+          fontFamily={'IBM Plex Mono'}
           fontSize='14px'
           fontWeight={400}
           color='#AEADAD'>
           Slippage
         </Typography>
-        <Typography color='#F2F1F0' fontSize='14px' fontWeight={400}>
+        <Typography
+          fontFamily={'IBM Plex Mono'}
+          color='#F2F1F0'
+          fontSize='14px'
+          fontWeight={400}>
           1.20 USDC (0.3%)
         </Typography>
       </div>
@@ -368,10 +404,14 @@ const OrderForm = () => {
           lineHeight='19.6px'
           fontSize='14px'
           fontWeight={400}
+          fontFamily={'IBM Plex Mono'}
           color='#AEADAD'>
-          FEE
+          Fee
         </Typography>
-        <Typography fontSize='14px' fontWeight={400}>
+        <Typography
+          fontFamily={'IBM Plex Mono'}
+          fontSize='14px'
+          fontWeight={400}>
           2.00 USDC (0.05%)
         </Typography>
       </div>
@@ -393,6 +433,7 @@ const OrderForm = () => {
         sx={{
           margin: '5px 0',
           backgroundColor: '#161514',
+          fontFamily: 'IBM Plex Mono',
           color: '#AEADAD',
           border: 'none',
           height: '24px',
@@ -441,6 +482,11 @@ const OrderForm = () => {
         fullWidth
         ref={buttonRef}
         onClick={handleClickBuy}
+        sx={{
+          fontFamily: 'IBM Plex Mono',
+          fontWeight: 400,
+          fontSize: '14px',
+        }}
         variant='contained'
         style={{
           background: '#4BC2A3',
